@@ -1,27 +1,254 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>メンバー記憶ページ</title>
-<style>
-:root{--bg:#f6f7fb;--card:#fff;--ink:#18202a;--sub:#697386;--line:#e6e8ef;--accent:#4f46e5;--green:#10b981;--red:#ef4444}*{box-sizing:border-box}body{margin:0;font-family:"Yu Gothic",Meiryo,system-ui,sans-serif;background:var(--bg);color:var(--ink)}header{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}.wrap{max-width:1220px;margin:auto;padding:20px}h1{margin:0 0 8px;font-size:clamp(24px,4vw,40px)}.lead{color:var(--sub);line-height:1.7;margin:0}.toolbar{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin-top:16px}input,textarea,button{font:inherit}input,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}button{border:0;border-radius:14px;padding:12px 16px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.green{background:var(--green)}.danger{background:var(--red)}.small{font-size:13px;padding:8px 10px;border-radius:10px}.stats{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px}.pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--sub)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 10px 28px rgba(16,24,40,.06)}.thumb{height:520px;background:linear-gradient(135deg,#eef2ff,#ecfeff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;color:#7b8794;font-weight:900;padding:14px;text-align:center}.thumb img{width:100%;height:100%;object-fit:contain;display:block}.badge{position:absolute;top:8px;left:8px;background:rgba(24,32,42,.82);color:#fff;border-radius:999px;padding:4px 10px;font-size:13px}.body{padding:18px}.title{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.name{font-size:24px;font-weight:900;margin:0}.file{font-size:12px;color:var(--sub);word-break:break-all;margin-top:8px}.memo{margin-top:10px;line-height:1.55;white-space:pre-wrap}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}dialog{border:0;border-radius:22px;max-width:600px;width:calc(100% - 32px);box-shadow:0 24px 80px rgba(0,0,0,.25)}dialog::backdrop{background:rgba(15,23,42,.45)}.modal{padding:20px}.form{display:grid;gap:12px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.right{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}.hint{font-size:13px;color:var(--sub);line-height:1.7}.hidden{display:none!important}@media(max-width:900px){.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.thumb{height:70vh;min-height:360px}.row{grid-template-columns:1fr}}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>メンバー記憶ページ</title>
+  <style>
+    :root{--bg:#f6f7fb;--card:#fff;--ink:#17202a;--sub:#697386;--line:#e6e8ef;--green:#10b981;--red:#ef4444;--blue:#4f46e5}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Yu Gothic",Meiryo,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+    header{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    .wrap{max-width:1160px;margin:0 auto;padding:20px}
+    h1{margin:0 0 8px;font-size:clamp(28px,4vw,44px);letter-spacing:.04em}
+    .lead{margin:0;color:var(--sub);line-height:1.7}
+    .toolbar{display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;margin-top:16px}
+    input,textarea,button{font:inherit}
+    input,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;outline:none}
+    button{border:0;border-radius:14px;padding:12px 16px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}
+    button.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+    button.green{background:var(--green)}
+    button.danger{background:var(--red)}
+    button.small{padding:9px 12px;border-radius:11px;font-size:14px}
+    .stats{display:flex;gap:10px;flex-wrap:wrap;margin:2px 0 22px}
+    .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 13px;color:var(--sub)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(320px,1fr));gap:26px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 12px 30px rgba(16,24,40,.07)}
+    .thumb{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,#eef2ff,#ecfeff);display:flex;align-items:center;justify-content:center;overflow:hidden;color:#7a8798;font-weight:800;text-align:center;padding:12px}
+    .thumb img{width:100%;height:100%;object-fit:contain;display:block}
+    .numBadge{position:absolute;top:10px;left:10px;background:rgba(24,32,42,.86);color:#fff;border-radius:999px;min-width:30px;height:30px;padding:0 9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;z-index:2}
+    .body{padding:18px}
+    .titleRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .name{font-size:25px;font-weight:900;margin:0}
+    .imgNo{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 9px;border-radius:999px;background:#edf2ff;color:#334155;font-size:13px;font-weight:900;border:1px solid #dce4ff}
+    .file{font-size:13px;color:var(--sub);word-break:break-all;margin-top:10px}
+    .memo{margin-top:12px;color:#344054;line-height:1.65;white-space:pre-wrap}
+    .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+    .hidden{display:none!important}
+    dialog{border:0;border-radius:22px;padding:0;max-width:620px;width:calc(100% - 32px);box-shadow:0 24px 80px rgba(0,0,0,.25)}
+    dialog::backdrop{background:rgba(15,23,42,.45)}
+    .modal{padding:22px}
+    .modal h2{margin:0 0 14px}
+    .form{display:grid;gap:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .right{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+    .hint{font-size:13px;color:var(--sub);line-height:1.7}
+    @media(max-width:760px){.toolbar{grid-template-columns:1fr}.row{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.wrap{padding:14px}.thumb{aspect-ratio:4/3}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>メンバー記憶ページ</h1>
+    <p class="lead">画像はGitHub上の <b>img</b> フォルダから読み込みます。画像名が一致すると表示されます。</p>
+    <div class="toolbar">
+      <input id="search" placeholder="名前・画像名・メモで検索">
+      <button class="green" id="addBtn">＋追加</button>
+      <button class="secondary" id="exportBtn">保存データ書き出し</button>
+      <button class="secondary" id="importBtn">読み込み</button>
+      <button class="secondary" id="resetBtn">初期データに戻す</button>
+      <input type="file" id="importFile" accept="application/json" class="hidden">
+    </div>
+  </div>
+</header>
 
-    /* 画像大きめ・PCは一行2人・画像全体表示 */
-    .grid{grid-template-columns:repeat(2,minmax(320px,1fr))!important;gap:24px!important}
-    .card{border-radius:24px!important}
-    .thumb{aspect-ratio:4/3!important;padding:12px!important;background:linear-gradient(135deg,#eef2ff,#ecfeff)!important}
-    .thumb img{width:100%!important;height:100%!important;object-fit:contain!important}
-    .name{font-size:24px!important}
-    .body{padding:18px!important}
-    @media(max-width:760px){.grid{grid-template-columns:1fr!important}.thumb{aspect-ratio:4/3!important}}
+<main class="wrap">
+  <div class="stats">
+    <span class="pill" id="count"></span>
+    <span class="pill">PCは一行2人</span>
+    <span class="pill">画像は全体表示</span>
+    <span class="pill">読み込み先：img/画像名</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
 
-  </style></head><body>
-<header><div class="wrap"><h1>メンバー記憶ページ</h1><p class="lead">一行2人で大きく表示する版です。画像は全体が見えるように表示されます。保存はこの端末のブラウザ内です。</p><div class="toolbar"><input id="search" placeholder="名前・画像名・メモで検索"><button class="green" id="addBtn">＋追加</button><button class="secondary" id="exportBtn">保存データ書き出し</button><button class="secondary" id="importBtn">読み込み</button><input type="file" id="importFile" accept="application/json" class="hidden"></div></div></header>
-<main class="wrap"><div class="stats"><span class="pill" id="count"></span><span class="pill">GitHubには index.html と img フォルダ</span><span class="pill">画像2は隣カード表示</span></div><div class="grid" id="grid"></div></main>
-<dialog id="dialog"><form method="dialog" class="modal" id="memberForm"><h2 id="modalTitle">メンバー編集</h2><div class="form"><input type="hidden" id="editId"><label>名前<input id="name" required></label><div class="row"><label>画像1の名前/メモ<input id="image1" placeholder="例：ぬんだこのー.jpeg"></label><label>画像2の名前/メモ<input id="image2" placeholder="例：タマ2.png"></label></div><div class="row"><label>画像1をこの端末から登録<input type="file" id="pic1" accept="image/*"></label><label>画像2をこの端末から登録<input type="file" id="pic2" accept="image/*"></label></div><label>メモ<textarea id="memo" rows="5" placeholder="キャラ設定、役割、口癖、ストーリーなど"></textarea></label><p class="hint">画像はブラウザ保存です。同じPC/スマホでは表示されます。別端末へ移す場合は「保存データ書き出し」→別端末で「読み込み」を使います。</p></div><div class="right"><button type="button" class="secondary" id="cancelBtn">キャンセル</button><button type="submit">保存</button></div></form></dialog>
+<dialog id="dialog">
+  <form method="dialog" class="modal" id="memberForm">
+    <h2 id="modalTitle">メンバー編集</h2>
+    <div class="form">
+      <input type="hidden" id="editId">
+      <label>名前<input id="name" required placeholder="例：アモン"></label>
+      <div class="row">
+        <label>画像ファイル1<input id="image1" placeholder="例：アモン.png"></label>
+        <label>画像ファイル2<input id="image2" placeholder="例：タマ2.png"></label>
+      </div>
+      <label>メモ<textarea id="memo" rows="5" placeholder="メモ、キャラ設定など"></textarea></label>
+      <p class="hint">画像は <b>img/アモン.png</b> のように読み込みます。GitHubのimgフォルダ内のファイル名と完全一致させてください。</p>
+    </div>
+    <div class="right">
+      <button type="button" class="secondary" id="cancelBtn">キャンセル</button>
+      <button type="submit">保存</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
-const initialMembers=[
-{id:'m001',name:'ぬんだこのー',image1:'ぬんだこのー.jpeg',image2:'',memo:''},{id:'m002',name:'アモン',image1:'アモン.png',image2:'',memo:''},{id:'m003',name:'キュン',image1:'キュン.png',image2:'',memo:''},{id:'m004',name:'れいちゃん',image1:'れいちゃん.png',image2:'',memo:''},{id:'m005',name:'Ryo',image1:'Ryo.png',image2:'',memo:''},{id:'m006',name:'わかめ閣下カッカ',image1:'わかめ閣下.png',image2:'',memo:''},{id:'m007',name:'崖玄',image1:'崖玄.png',image2:'',memo:''},{id:'m008',name:'バルバロッサ',image1:'バルバロッサ.png',image2:'',memo:''},{id:'m009',name:'KazNaka',image1:'KazNaka.png',image2:'',memo:''},{id:'m010',name:'Yuko',image1:'Yuko.png',image2:'',memo:''},{id:'m011',name:'STONE',image1:'STONE.png',image2:'',memo:''},{id:'m012',name:'ぴえろ',image1:'ぴえろ.png',image2:'',memo:''},{id:'m013',name:'神鎧',image1:'神鎧.png',image2:'',memo:''},{id:'m014',name:'上村友二',image1:'上村友二.png',image2:'',memo:''},{id:'m015',name:'アスカ',image1:'アスカ.png',image2:'',memo:''},{id:'m016',name:'風雲',image1:'風雲.png',image2:'',memo:''},{id:'m017',name:'タマ',image1:'タマ.png',image2:'タマ2.png',memo:''},{id:'m018',name:'SHINOBU',image1:'SHINOBU.png',image2:'',memo:''},{id:'m019',name:'たかゆき',image1:'たかゆき.png',image2:'',memo:''},{id:'m020',name:'ふじ',image1:'ふじさん.png',image2:'',memo:''},{id:'m021',name:'かっぱちゃん',image1:'かっぱちゃん.png',image2:'かっぱちゃん2.png',memo:''},{id:'m022',name:'皇帝ペンギン',image1:'皇帝ペンギン.png',image2:'',memo:''},{id:'m023',name:'ミートウ',image1:'ミートウ.png',image2:'',memo:''},{id:'m024',name:'ゴリラ丸',image1:'ゴリラ丸.png',image2:'',memo:''},{id:'m025',name:'桃じり麗',image1:'桃じり麗.png',image2:'',memo:''},{id:'m026',name:'舜天',image1:'舜天.png',image2:'',memo:''},{id:'m027',name:'獅子神楽',image1:'獅子神楽.png',image2:'獅子神楽2.png',memo:''},{id:'m028',name:'みっか',image1:'みっか.png',image2:'',memo:''},{id:'m029',name:'エタニティー',image1:'エタニティー.png',image2:'',memo:''}
+const initialMembers = [
+  {id:'m001', name:'ぬんだこのー', image1:'ぬんだこのー.png', image2:'', memo:''},
+  {id:'m002', name:'アモン', image1:'アモン.png', image2:'', memo:''},
+  {id:'m003', name:'キュン', image1:'キュン.png', image2:'', memo:''},
+  {id:'m004', name:'れいちゃん', image1:'れいちゃん.png', image2:'', memo:''},
+  {id:'m005', name:'Ryo', image1:'Ryo.png', image2:'', memo:''},
+  {id:'m006', name:'わかめ閣下カッカ', image1:'わかめ閣下.png', image2:'', memo:''},
+  {id:'m007', name:'崖玄', image1:'崖玄.png', image2:'', memo:''},
+  {id:'m008', name:'バルバロッサ', image1:'バルバロッサ.png', image2:'', memo:''},
+  {id:'m009', name:'KazNaka', image1:'KazNaka.png', image2:'', memo:''},
+  {id:'m010', name:'Yuko', image1:'Yuko.png', image2:'', memo:''},
+  {id:'m011', name:'STONE', image1:'STONE.png', image2:'', memo:''},
+  {id:'m012', name:'ぴえろ', image1:'ぴえろ.png', image2:'', memo:''},
+  {id:'m013', name:'神鎧', image1:'神鎧.png', image2:'', memo:''},
+  {id:'m014', name:'上村友二', image1:'上村友二.png', image2:'', memo:''},
+  {id:'m015', name:'アスカ', image1:'アスカ.png', image2:'', memo:''},
+  {id:'m016', name:'風雲', image1:'風雲.png', image2:'', memo:''},
+  {id:'m017', name:'タマ', image1:'タマ.png', image2:'タマ2.png', memo:''},
+  {id:'m018', name:'SHINOBU', image1:'SHINOBU.png', image2:'', memo:''},
+  {id:'m019', name:'たかゆき', image1:'たかゆき.png', image2:'', memo:''},
+  {id:'m020', name:'ふじ', image1:'ふじさん.png', image2:'', memo:''},
+  {id:'m021', name:'かっぱちゃん', image1:'かっぱちゃん.png', image2:'かっぱちゃん2.png', memo:''},
+  {id:'m022', name:'皇帝ペンギン', image1:'皇帝ペンギン.png', image2:'', memo:''},
+  {id:'m023', name:'ミートウ', image1:'ミートウ.png', image2:'', memo:''},
+  {id:'m024', name:'ゴリラ丸', image1:'ゴリラ丸.png', image2:'', memo:''},
+  {id:'m025', name:'桃じり麗', image1:'桃じり麗.png', image2:'', memo:''},
+  {id:'m026', name:'舜天', image1:'舜天.png', image2:'', memo:''},
+  {id:'m027', name:'獅子神楽', image1:'獅子神楽.png', image2:'獅子神楽2.png', memo:''},
+  {id:'m028', name:'みっか', image1:'みっか.png', image2:'', memo:''},
+  {id:'m029', name:'エタニティー', image1:'エタニティー.png', image2:'', memo:''}
 ];
-const KEY='member-memory-v2';let members=JSON.parse(localStorage.getItem(KEY)||'null')||initialMembers;const $=s=>document.querySelector(s);const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));function save(){localStorage.setItem(KEY,JSON.stringify(members))}function readFileAsDataURL(file){return new Promise(res=>{if(!file)return res('');const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(file)})}function imgBox(c){const img=c.data?`<img src="${c.data}" alt="${esc(c.name)}">`:esc(c.imageFile||'画像未登録');return `<div class="thumb"><span class="badge">${c.no}</span>${img}</div>`}function cards(){let arr=[];members.forEach(m=>{arr.push({id:m.id,no:'1',name:m.name,imageFile:m.image1,data:m.pic1,memo:m.memo});if(m.image2||m.pic2)arr.push({id:m.id,no:'2',name:m.name,imageFile:m.image2,data:m.pic2,memo:m.memo})});return arr}function render(){const q=$('#search').value.trim().toLowerCase();const ms=members.filter(m=>(m.name+' '+m.image1+' '+m.image2+' '+m.memo).toLowerCase().includes(q));let arr=[];ms.forEach(m=>{arr.push({id:m.id,no:'1',name:m.name,imageFile:m.image1,data:m.pic1,memo:m.memo});if(m.image2||m.pic2)arr.push({id:m.id,no:'2',name:m.name,imageFile:m.image2,data:m.pic2,memo:m.memo})});$('#count').textContent=`登録 ${members.length}件 / 表示 ${arr.length}枚`;$('#grid').innerHTML=arr.map(c=>`<article class="card">${imgBox(c)}<div class="body"><div class="title"><h3 class="name">${esc(c.name)}</h3><span class="badge" style="position:static;background:#e8eefc;color:#334155">${c.no}</span></div><div class="file">画像${c.no}：${esc(c.imageFile||'未設定')}</div>${c.memo?`<div class="memo">${esc(c.memo)}</div>`:''}<div class="actions"><button class="small secondary" onclick="editMember('${c.id}')">編集</button><button class="small danger" onclick="deleteMember('${c.id}')">削除</button></div></div></article>`).join('')}function openModal(m){$('#memberForm').reset();$('#editId').value=m?.id||'';$('#modalTitle').textContent=m?'メンバー編集':'メンバー追加';$('#name').value=m?.name||'';$('#image1').value=m?.image1||'';$('#image2').value=m?.image2||'';$('#memo').value=m?.memo||'';$('#dialog').showModal()}window.editMember=id=>openModal(members.find(m=>m.id===id));window.deleteMember=id=>{if(confirm('削除しますか？')){members=members.filter(m=>m.id!==id);save();render()}};$('#addBtn').onclick=()=>openModal(null);$('#cancelBtn').onclick=()=>$('#dialog').close();$('#search').oninput=render;$('#memberForm').onsubmit=async e=>{e.preventDefault();const id=$('#editId').value||('m'+Date.now());const old=members.find(m=>m.id===id)||{};const pic1=await readFileAsDataURL($('#pic1').files[0]);const pic2=await readFileAsDataURL($('#pic2').files[0]);const data={id,name:$('#name').value.trim(),image1:$('#image1').value.trim(),image2:$('#image2').value.trim(),memo:$('#memo').value.trim(),pic1:pic1||old.pic1||'',pic2:pic2||old.pic2||''};const i=members.findIndex(m=>m.id===id);if(i>=0)members[i]=data;else members.push(data);save();$('#dialog').close();render()};$('#exportBtn').onclick=()=>{const b=new Blob([JSON.stringify(members,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='member-memory-backup.json';a.click();URL.revokeObjectURL(a.href)};$('#importBtn').onclick=()=>$('#importFile').click();$('#importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{members=JSON.parse(r.result);save();render();alert('読み込みました')}catch{alert('読み込み失敗')}};r.readAsText(f)};render();
-</script></body></html>
+
+const KEY = 'member-memory-v3-img-folder';
+let members = JSON.parse(localStorage.getItem(KEY) || 'null') || initialMembers;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function save(){ localStorage.setItem(KEY, JSON.stringify(members)); }
+
+function imagePath(file){
+  return 'img/' + String(file || '').split('/').map(encodeURIComponent).join('/');
+}
+
+function imgBox(file, name, no){
+  if(!file) return `<div class="thumb"><span class="numBadge">${no}</span>画像未設定</div>`;
+  const src = imagePath(file);
+  return `<div class="thumb"><span class="numBadge">${no}</span><img src="${src}" alt="${esc(name)} 画像${no}" loading="lazy" onerror="this.remove();this.parentElement.innerHTML='<span class=&quot;numBadge&quot;>${no}</span>画像なし：${esc(file)}';"></div>`;
+}
+
+function makeCards(list){
+  const cards = [];
+  list.forEach(m => {
+    cards.push({...m, imageFile:m.image1, no:'1'});
+    if(m.image2) cards.push({...m, imageFile:m.image2, no:'2'});
+  });
+  return cards;
+}
+
+function render(){
+  const q = $('#search').value.trim().toLowerCase();
+  const filtered = members.filter(m => (m.name + ' ' + m.image1 + ' ' + m.image2 + ' ' + m.memo).toLowerCase().includes(q));
+  const cards = makeCards(filtered);
+  $('#count').textContent = `登録 ${members.length}件 / 表示 ${cards.length}枚`;
+  $('#grid').innerHTML = cards.map(c => `
+    <article class="card">
+      ${imgBox(c.imageFile, c.name, c.no)}
+      <div class="body">
+        <div class="titleRow"><h3 class="name">${esc(c.name)}</h3><span class="imgNo">${c.no}</span></div>
+        <div class="file">画像${c.no}：${esc(c.imageFile || '未設定')}</div>
+        ${c.memo ? `<div class="memo">${esc(c.memo)}</div>` : ''}
+        <div class="actions">
+          <button class="small secondary" onclick="editMember('${c.id}')">編集</button>
+          <button class="small danger" onclick="deleteMember('${c.id}')">削除</button>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function openModal(member){
+  $('#memberForm').reset();
+  $('#editId').value = member?.id || '';
+  $('#modalTitle').textContent = member ? 'メンバー編集' : 'メンバー追加';
+  $('#name').value = member?.name || '';
+  $('#image1').value = member?.image1 || '';
+  $('#image2').value = member?.image2 || '';
+  $('#memo').value = member?.memo || '';
+  $('#dialog').showModal();
+}
+
+window.editMember = id => openModal(members.find(m => m.id === id));
+window.deleteMember = id => {
+  if(confirm('削除しますか？')) {
+    members = members.filter(m => m.id !== id);
+    save();
+    render();
+  }
+};
+
+$('#addBtn').onclick = () => openModal(null);
+$('#cancelBtn').onclick = () => $('#dialog').close();
+$('#search').oninput = render;
+
+$('#memberForm').onsubmit = e => {
+  e.preventDefault();
+  const id = $('#editId').value || ('m' + Date.now());
+  const data = {
+    id,
+    name: $('#name').value.trim(),
+    image1: $('#image1').value.trim(),
+    image2: $('#image2').value.trim(),
+    memo: $('#memo').value.trim()
+  };
+  const i = members.findIndex(m => m.id === id);
+  if(i >= 0) members[i] = data; else members.push(data);
+  save();
+  $('#dialog').close();
+  render();
+};
+
+$('#exportBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify(members, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'member-memory-backup.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+$('#importBtn').onclick = () => $('#importFile').click();
+$('#importFile').onchange = e => {
+  const f = e.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      members = JSON.parse(r.result);
+      save();
+      render();
+      alert('読み込みました');
+    } catch {
+      alert('JSONの読み込みに失敗しました');
+    }
+  };
+  r.readAsText(f);
+};
+
+$('#resetBtn').onclick = () => {
+  if(confirm('ブラウザ内の保存データを消して、初期データに戻しますか？')) {
+    localStorage.removeItem(KEY);
+    members = initialMembers;
+    render();
+  }
+};
+
+render();
+</script>
+</body>
+</html>
